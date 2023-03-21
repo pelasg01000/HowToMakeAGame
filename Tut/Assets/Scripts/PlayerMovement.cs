@@ -5,9 +5,15 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public Rigidbody rb;
+    public GameManager gamemanager;
 
     public float forceNumber;
- 
+    public float forceRight;
+    public float forceLeft;
+    private void Start()
+    {
+        gamemanager = FindObjectOfType<GameManager>();
+    }
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -15,15 +21,19 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetKey("d"))
         {
-            rb.AddForce(1000 * Time.deltaTime, 0, 0);
+            rb.AddForce(forceRight * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
         }
         if (Input.GetKey("a"))
         {
-            rb.AddForce(-1000 * Time.deltaTime, 0, 0);
+            rb.AddForce(forceLeft * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
         }
         if (Input.GetKey("g"))
         {
-            rb.AddForce(0, 400 * Time.deltaTime, 0);
+            rb.AddForce(0, 400 * Time.deltaTime, 0, ForceMode.VelocityChange);
+        }
+        if(rb.position.y < -2f)
+        {
+            gamemanager.EndGame();
         }
     }
 }
